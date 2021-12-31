@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/alertes.html.twig' as utils %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-5 bg-light mt-4 p-4 d-flex justify-content-center">
+                {% for flashError in app.flashes('verify_email_error') %}
+                    {{ utils.alert(flashError, 'danger') }}
+                {% endfor %}
+
+                <div class="well text-center">
+                        <h1>Inscription</h1>
+
+                    {{ form_start(registrationForm) }}
+                        {{ form_row(registrationForm.username, {
+                            label: 'Nom d\utilisateur'
+                        }) }}
+                        {{ form_row(registrationForm.email, {
+                            label: 'Adresse mail',
+                        }) }}
+                        {{ form_row(registrationForm.plainPassword.pass, {
+                            label: 'Mot de passe'
+                        }) }}
+                        {{ form_row(registrationForm.plainPassword.pass, {
+                            label: 'Mot de passe'
+                        }) }}
+                        {{ form_row(registrationForm.agreeTerms, {
+                            label: 'Accepter les conditions générales d\'utilisation'
+                        }) }}
+                        <p>En cliquant sur le bouton "Créer un compte", vous indiquez avoir pris connaissance et accepté les <a href="/assets/docs/cgu.pdf" title="Conditions d'utilisation">Conditions Générales d'Utilisation</a>.</p>
+                        <button type="submit" class="btn btn-primary">Créer un compte</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

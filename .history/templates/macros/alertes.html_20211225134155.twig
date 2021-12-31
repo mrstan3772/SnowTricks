@@ -1,0 +1,8 @@
+{% macro alert(message, type) %}
+    {% if type == 'error' %}
+        {% set type = 'danger' %}
+    {% endif %}
+    <div class="alert alert-{{ type }} text-center" role="alert">
+        {{ message }}
+    </div>
+{% endmacro %}
