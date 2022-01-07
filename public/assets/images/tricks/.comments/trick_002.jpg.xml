@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<comment version="3.0">
+  <caption/>
+  <note/>
+  <place/>
+  <categories>
+    <category value="action"/>
+    <category value="air"/>
+    <category value="blue"/>
+    <category value="board"/>
+    <category value="cold"/>
+    <category value="cool"/>
+    <category value="dangerous"/>
+    <category value="extreme"/>
+    <category value="fast"/>
+    <category value="freeze"/>
+    <category value="fun"/>
+    <category value="guy"/>
+    <category value="jacket"/>
+    <category value="jump"/>
+    <category value="lifestyle"/>
+    <category value="lift"/>
+    <category value="men"/>
+    <category value="mountains"/>
+    <category value="play"/>
+    <category value="red"/>
+    <category value="resorts"/>
+    <category value="season"/>
+    <category value="ski"/>
+    <category value="skier"/>
+    <category value="sky"/>
+    <category value="slope"/>
+    <category value="snow"/>
+    <category value="snowboard"/>
+    <category value="snowboarder"/>
+    <category value="snowboarding"/>
+    <category value="speed"/>
+    <category value="sport"/>
+    <category value="suite"/>
+    <category value="teenagers"/>
+    <category value="teens"/>
+    <category value="top"/>
+    <category value="travel"/>
+    <category value="vacation"/>
+    <category value="white"/>
+    <category value="winter"/>
+    <category value="young"/>
+  </categories>
+</comment>

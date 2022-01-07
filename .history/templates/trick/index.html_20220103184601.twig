@@ -1,0 +1,16 @@
+{% for trick in paginator.results %}
+    <div class="col">
+        <div class="card">
+            <a href="{{ path('trick_detail', {trick_slug: trick.trickSlug}) }}"
+                title="Cliquer pour consulter la figure {{ trick.trickName }}"><img
+                    src="/assets/images/tricks/{{ trick.trickThumbnail }}" class="card-img-top" alt=""></a>
+            <div class="card-body">
+                <h5 class="card-title"><a href="{{ path('trick_detail', {trick_slug: trick.trickSlug}) }}"
+                        title="Cliquer pour consulter la figure {{ trick.trickName }}">{{
+                        trick.trickName|u.truncate(20, '...') }}</a></h5>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="well"><p>Plus de figure. Pour en ajouter <a href="créer un compte" title="Page de création de compte">créer un compte !</a></p></div>
+{% endfor %}

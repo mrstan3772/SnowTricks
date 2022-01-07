@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/alertes.html.twig' as utils %}
+
+{% block title %}Figures | ACCUEIL{% endblock %}
+
+{% block main %}
+    <main id="main">
+        <div class="container">
+            <div class="row row-cols-1 mt-5 row-cols-md-5 g-4">
+                {% for trick in paginator.results %}
+                    <div class="col">
+                        <div class="card">
+                            <a href="{{ path(route_name, route_parameters = [], relative = false) }}" title=""><img src="/assets/images/tricks/{{ trick.trickThumbnail }}" class="card-img-top" alt=""></a>
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="" title="">{{ trick.trickName}}</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity(fields="trick_name",message="Il existe déjà une figure avec un nom similaire.",groups={"trick_creation"})
  */
 class Trick
 {
@@ -25,7 +27,7 @@ class Trick
     private $trick_author_id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $trick_name;
 
@@ -45,7 +47,7 @@ class Trick
     private $trick_creation_date;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $trick_update_date;
 
@@ -70,6 +72,16 @@ class Trick
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="comment_trick")
      */
     private $trick_comments;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $trick_thumbnail;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $trick_slug;
 
     public function __construct()
     {
@@ -234,6 +246,30 @@ class Trick
                 $trickComment->setCommentTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTrickThumbnail(): ?string
+    {
+        return $this->trick_thumbnail;
+    }
+
+    public function setTrickThumbnail(string $trick_thumbnail): self
+    {
+        $this->trick_thumbnail = $trick_thumbnail;
+
+        return $this;
+    }
+
+    public function getTrickSlug(): ?string
+    {
+        return $this->trick_slug;
+    }
+
+    public function setTrickSlug(string $trick_slug): self
+    {
+        $this->trick_slug = $trick_slug;
 
         return $this;
     }
