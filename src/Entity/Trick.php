@@ -78,6 +78,11 @@ class Trick
      */
     private $trick_thumbnail;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $trick_slug;
+
     public function __construct()
     {
         $this->trick_attachments = new ArrayCollection();
@@ -253,6 +258,18 @@ class Trick
     public function setTrickThumbnail(string $trick_thumbnail): self
     {
         $this->trick_thumbnail = $trick_thumbnail;
+
+        return $this;
+    }
+
+    public function getTrickSlug(): ?string
+    {
+        return $this->trick_slug;
+    }
+
+    public function setTrickSlug(string $trick_slug): self
+    {
+        $this->trick_slug = $trick_slug;
 
         return $this;
     }
