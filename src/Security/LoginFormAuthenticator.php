@@ -67,6 +67,12 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        if ($request->request->get('_target_path') !== '') {
+            return new RedirectResponse(
+                $request->request->get('_target_path')
+            );
+        }
+
         return new RedirectResponse(
             $this->router->generate('home')
         );
@@ -75,6 +81,15 @@ class LoginFormAuthenticator extends AbstractAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+
+        if ($request->request->get('_target_path') !== '') {
+            return new RedirectResponse(
+                $this->router->generate(
+                    'security_login',
+                    ['redirect_to' => $request->request->get('_target_path')]
+                )
+            );
+        }
 
         return new RedirectResponse(
             $this->router->generate('security_login')

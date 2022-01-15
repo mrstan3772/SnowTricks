@@ -1,8 +1,9 @@
 <?php
 namespace App\DataFixtures;
 
-use App\Entity\User;
+use App\Factory\CommentFactory;
 use App\Factory\GroupFactory;
+use App\Factory\TrickAttachmentFactory;
 use App\Factory\TrickFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -21,12 +22,16 @@ class AppFixtures extends Fixture
         // GroupFactory::createOne(['group_name' => 'Groupe 4']);
         // GroupFactory::createOne(['group_name' => 'Groupe 5']);
 
-        TrickFactory::createOne(['trick_name' => 'Butters', 'trick_thumbnail' => 'butters.jpg']);
-        TrickFactory::createOne(['trick_name' => 'Indy Grabs', 'trick_thumbnail' => 'indy-grabs.jpeg']);
-        TrickFactory::createOne(['trick_name' => 'Ollie', 'trick_thumbnail' => 'Ollie.jpg']);
-        TrickFactory::createOne(['trick_name' => 'Frontside 180s', 'trick_thumbnail' => 'frontside-180s.jpg']);
-        TrickFactory::createMany(31);
+        // TrickFactory::createOne(['trick_name' => 'Butters', 'trick_thumbnail' => 'butters.jpg']);
+        // TrickFactory::createOne(['trick_name' => 'Indy Grabs', 'trick_thumbnail' => 'indy-grabs.jpeg']);
+        // TrickFactory::createOne(['trick_name' => 'Ollie', 'trick_thumbnail' => 'Ollie.jpg']);
+        // TrickFactory::createOne(['trick_name' => 'Frontside 180s', 'trick_thumbnail' => 'frontside-180s.jpg']);
+        // TrickFactory::createMany(31);
+
+        // CommentFactory::createMany(500);
         
+        TrickAttachmentFactory::createMany(1500);
+
         $manager->flush();
     }
 }

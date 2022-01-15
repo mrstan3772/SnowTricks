@@ -1,0 +1,76 @@
+/*--------------------------------------------------------------
+# Trick Details
+--------------------------------------------------------------*/
+
+/* Special Effect on Title Post */
+
+/* Post container */
+
+.detail-box {
+  margin-top: -500px;
+  z-index: 51;
+  position: relative;
+  background: #fff;
+  border: 3px solid black;
+}
+
+.detail-header {
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 600px;
+}
+
+.detail-header h1 {
+  font-size: 4.5rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 200px;
+}
+
+@media (max-width: 768px) {
+  .detail-header {
+    height: 200px;
+  }
+
+  .detail-header h1 {
+    font-size: 1.5em;
+    line-height: 50px;
+  }
+}
+
+.trick-attachment .card {
+  border: none;
+}
+
+.trick-attachment .card img {
+  height: 300px;
+}
+
+.trick-attachment .card .card-title {
+  color: #fff;
+}
+
+.trick-description-section h1 {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.post-metadata {
+  text-align: center;
+}
+
+/** Add Comment **/
+#post-add-comment > p {
+  max-width: 450px;
+  margin: auto;
+}
+
+.trick-comment {
+    margin-top: 30px;
+}
+
+
+.user-avatar {
+    width: 100%;
+}

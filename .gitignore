@@ -7,6 +7,9 @@
 /public/bundles/
 /var/
 /vendor/
+/public/assets/content/upload/
+/.vscode/
+/.history/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

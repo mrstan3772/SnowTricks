@@ -57,7 +57,7 @@ class ForgotPasswordController extends AbstractController
             );
 
             /* Lure  */
-            if (!$user) {
+            if (!$user || !$user->isVerified()) {
                 $this->addFlash('success', 'un email vous a été envoyé pour redéfinir votre mot de passe.');
 
                 return $this->redirectToRoute('security_login');

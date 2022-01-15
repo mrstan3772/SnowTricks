@@ -1,0 +1,36 @@
+
+{% if index == 1 or index == 2 %}
+    {% set start_index = 5 %}
+    {% set end_index = 5 %}
+{% else %}
+    {% set start_index = (index - 1) * 5 %}
+    {% set end_index = 5 %}
+{% endif %}
+{% for comment in comments|reverse|slice(start_index, end_index) %}
+    <div class="trick-comment d-flex justify-content-center">
+        <a name="comment_{{ comment.id }}"></a>
+        <div class="col-md-1 picture-comment-container">
+            <img src="/assets/images/users/{{ comment.commentAuthor.userAvatar }}" class="user-avatar"
+                alt="{{ comment.commentAuthor.userAvatar }}" />
+        </div>
+        <div class="col-md-11 comment-container">
+            <h4>
+                <strong>{{ comment.commentAuthor.username }}</strong> a commenté le
+                {# it's not mandatory to set the timezone in localizeddate(). This is done to
+                avoid errors when the 'intl' PHP extension is not available and the application
+                is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+                <strong>{{ comment.commentCreationDate|date('d/m/Y à H:h:i') }}</strong>
+            </h4>
+            <div>
+                {{ comment.commentContent }}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="trick-comment text-center">
+        <p>Fin des commentaires !
+            Pour en ajouter <a href="{{ path('app_register') }}" title="Page de création de compte" class="fw-bold">créer un
+                compte </a> ou <a href="{{ path('security_login') }}" title="Page de connexion"
+                class="fw-bold">connectez-vous</a> !</p>
+    </div>
+{% endfor %}

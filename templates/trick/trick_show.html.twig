@@ -2,3 +2,143 @@
 {% import 'macros/alertes.html.twig' as utils %}
 
 {% block title %}Figures | {{ title_page }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+    <link href="/dist/css/trick_details.css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
+    <script>
+        const trick_slug = "{{ trick.trickSlug }}";
+        $(window).on('load', function () {
+            const players = Array.from(document.querySelectorAll('.js-player')).map((p) => new Plyr(p));
+        });
+    </script>
+    <script src="/dist/js/trick_details.js"></script>
+{% endblock %}
+
+{% block body_id 'trick_details' %}
+
+{% block main %}
+    {{ include('_hero_section.html.twig', {show: false}) }}
+
+    <!-- ======= Trick Detail ======= -->
+    <main id="main">
+        {{ no_script|raw }}
+
+        <section class="container detail-box">
+                <header class="row detail-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/images/tricks/{{ trick.TrickThumbnail }})">
+                    <h1 class="text-uppercase text-center">{{ trick.TrickName }}</span>
+                </header>
+
+                <aside class="container trick-attachment-section">
+                    <div class="row row-cols-1 mt-5 row-cols-md-4 g-4 trick-attachment hide-content hidden-container">
+                        {% for trick in trick.trickAttachments %}
+                            {% if trick.TaType == 'image'%}
+                                <div class="card text-white">
+                                    <figure class="hover-img">
+                                        <img src="/assets/content/upload/images/{{ trick.TaPath }}" alt="Card image">
+                                        <figcaption>
+                                            {{ trick.TaPath }}
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for trick in trick.trickAttachments %}
+                            {% if trick.TaType == 'video'%}
+                                <div class="card text-white w-100">
+                                    <video class="js-player" playsinline controls>
+                                        <source src="/assets/content/upload/videos/{{ trick.TaPath }}" type="video/mp4" />
+                                    </video>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <button class="btn btn-outline-dark show-more" data-status="more"><i class="fas fa-chevron-down"></i></button>
+                </aside>
+                
+                <article class="row trick-description-section mt-30">
+                    <header>
+                        <h1>{{ trick.TrickName }}</h1>
+                    </header>
+
+                    <main>
+                        <section class="post-description">
+                            <p>{{ trick.TrickDescription }}</p>
+                        </section>
+
+                        <section class="post-metadata">
+                            <span class="metadata"><i class="fa fa-calendar"></i> {{ trick.trickCreationDate|date('d/m/Y à H:h:i') }}</span>
+                            {% if trick.TrickUpdateDate is defined and trick.TrickUpdateDate is not null %}
+                                <span class="metadata"><i class="fas fa-pen"></i> {{ trick.TrickUpdateDate|date('d/m/Y à H:h:i') }}</span>
+                            {% endif %}
+                            <span class="metadata"><i class="fa fa-user"></i> {{ trick.trickAuthor.username }}</span>
+                            <span class="metadata"><i class="fas fa-tags"></i> {{ trick.trickGroup.groupName }}</span>
+                        </section>
+                    </main>
+                </article>
+
+                <section class="row comment-section d-flex justify-content-center">
+                    <div id="post-add-comment" class="container well">
+                            <hr />
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    {{ render(controller('App\\Controller\\TrickController::commentForm', {'id': trick.id})) }}
+                                {% else %}
+                                    <p>
+                                        <a class="btn btn-dark" href="{{ path('security_login', {'redirect_to': app.request.pathInfo}) }}">
+                                            <i class="fas fa-sign-in-alt"></i>  Connectez-vous
+                                        </a>
+                                        pour publier un commentaire
+                                    </p>
+                                {% endif %}
+                            <hr />
+                    </div>
+
+                    <div>
+                        <h3>
+                            <i class="fa fa-comments" aria-hidden="true"></i> Commentaires ({{ trick.trickComments|length }}) :
+                        </h3>
+                    </div>
+
+                    <div>
+                        {% for comment in comments|reverse|slice(0, 5) %}
+                            <div class="trick-comment d-flex justify-content-center">
+                                <a name="comment_{{ comment.id }}"></a>
+                                <div class="col-md-1 picture-comment-container">
+                                    <img src="/assets/images/users/{{ comment.commentAuthor.userAvatar }}" class="user-avatar" alt="{{ comment.commentAuthor.userAvatar }}" />
+                                </div>
+                                <div class="col-md-11 comment-container">
+                                    <h4>
+                                        <strong>{{ comment.commentAuthor.username }}</strong> a commenté le
+                                        {# it's not mandatory to set the timezone in localizeddate(). This is done to
+                                        avoid errors when the 'intl' PHP extension is not available and the application
+                                        is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+                                        <strong>{{ comment.commentCreationDate|date('d/m/Y à H:h:i') }}</strong>
+                                    </h4>
+                                    <div>
+                                        {{ comment.commentContent }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="trick-comment">
+                                <p>Aucun commentaire.  
+                                Pour en ajouter <a href="{{ path('app_register') }}" title="Page de création de compte" class="fw-bold">créer un compte </a> ou <a href="{{ path('security_login') }}" title="Page de connexion" class="fw-bold">connectez-vous</a> !</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="w-75  btn btn-outline-dark mt-5 mb-5 load-more-btn">
+                        <span class="spinner-grow spinner-grow-lg" role="status" aria-hidden="true"></span>
+                        <span class="button-text">Charger plus de commentaires</span>
+                    </button>
+                </section>
+        </section>
+    </main>
+{% endblock %}
