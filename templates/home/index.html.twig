@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% import 'macros/alertes.html.twig' as utils %}
 
-{% block title %}{{ title_page }} | {{ title_page }}{% endblock %}
+{% block title %}Accueil | {{ title_page }}{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -16,7 +16,6 @@
 {% block body_id 'home' %}
 
 {% block main %}
-    {{ include('_hero_section.html.twig', {show: true}) }}
     <!-- ======= Trick List ======= -->
     <main id="main">
         {{ no_script|raw }}

@@ -30,13 +30,28 @@ class TrickAttachment
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $ta_path;
+    private $ta_filename;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="ta_tricks")
      * @ORM\JoinColumn(name="ta_trick_id", referencedColumnName="id", nullable=false)
      */
     private $ta_trick;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ta_original_filename;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ta_mime_type;
+
+    public function __construct(Trick $trick)
+    {
+        $this->ta_trick = $trick;
+    }
 
     public function getId(): ?int
     {
@@ -67,14 +82,14 @@ class TrickAttachment
         return $this;
     }
 
-    public function getTaPath(): ?string
+    public function getTaFilename(): ?string
     {
-        return $this->ta_path;
+        return $this->ta_filename;
     }
 
-    public function setTaPath(string $ta_path): self
+    public function setTaFilename(string $ta_filename): self
     {
-        $this->ta_path = $ta_path;
+        $this->ta_filename = $ta_filename;
 
         return $this;
     }
@@ -87,6 +102,30 @@ class TrickAttachment
     public function setTaTrick(?Trick $ta_trick): self
     {
         $this->ta_trick = $ta_trick;
+
+        return $this;
+    }
+
+    public function getTaOriginalFilename(): ?string
+    {
+        return $this->ta_original_filename;
+    }
+
+    public function setTaOriginalFilename(string $ta_original_filename): self
+    {
+        $this->ta_original_filename = $ta_original_filename;
+
+        return $this;
+    }
+
+    public function getTaMimeType(): ?string
+    {
+        return $this->ta_mime_type;
+    }
+
+    public function setTaMimeType(string $ta_mime_type): self
+    {
+        $this->ta_mime_type = $ta_mime_type;
 
         return $this;
     }

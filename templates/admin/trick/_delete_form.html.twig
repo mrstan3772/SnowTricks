@@ -1,0 +1,8 @@
+{{ include('trick/_delete_trick_confirmation.html.twig') }}
+<form action="{{ url('admin_trick_delete', {trick_slug: trick.TrickSlug}) }}" method="post" data-confirmation="true" id="delete-form">
+    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <button type="submit" class="btn btn-lg btn-block btn-danger">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        Supprimer l'article
+    </button>
+</form>

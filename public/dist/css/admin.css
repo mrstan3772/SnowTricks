@@ -1,0 +1,24 @@
+#sidebar .section {
+  margin-bottom: 2em;
+}
+
+#sidebar p {
+  font-size: 15px;
+}
+
+#sidebar p + p {
+  margin: 1.5em 0 0;
+}
+
+#sidebar {
+  background: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.navbar {
+  background-color: darkslategrey;
+}

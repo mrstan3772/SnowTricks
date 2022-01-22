@@ -1,0 +1,48 @@
+{% extends 'admin/layout.html.twig' %}
+{% import 'macros/alertes.html.twig' as utils %}
+
+{% block title %}{{ trick.TrickName }} | {{ title_page }}{% endblock %}
+
+{% block body_id 'trick_show' %}
+
+{% block main %}
+    <!-- ======= Trick Content ======= -->
+    <main id="main">
+        {{ no_script|raw }}
+
+        <div class="container">
+            <article class="row trick-description-section mt-5">
+                <header class="text-center">
+                    <h1>{{ trick.TrickName }}</h1>
+                </header>
+
+                <main>
+                    <section class="post-metadata text-center mt-3">
+                        <span class="metadata"><i class="fa fa-calendar"></i> {{ trick.trickCreationDate|date('d/m/Y à H:h:i') }}</span>
+                            {% if trick.TrickUpdateDate is defined and trick.TrickUpdateDate is not null %}
+                                <span class="metadata"><i class="fas fa-pen"></i> {{ trick.TrickUpdateDate|date('d/m/Y à H:h:i') }}</span>
+                            {% endif %}
+                            <span class="metadata"><i class="fa fa-user"></i> {{ trick.trickAuthor.username }}</span>
+                            <span class="metadata"><i class="fas fa-tags"></i> {{ trick.trickGroup.groupName }}</span>
+                    </section>
+
+                    <section class="post-description mt-5">
+                        <p class="text-center">{{ trick.TrickDescription|markdown_to_html }}</p>
+                    </section>
+                </main>
+            </article>
+        </div>
+    </main>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section">
+        <a href="{{ path('admin_trick_edit', {trick_slug: trick.TrickSlug}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-edit" aria-hidden="true"></i> Modifier le contenu
+        </a>
+    </div>
+
+    <div class="section">
+        {{ include('admin/trick/_delete_form.html.twig', {trick: trick}, with_context = false) }}
+    </div>
+{% endblock %}

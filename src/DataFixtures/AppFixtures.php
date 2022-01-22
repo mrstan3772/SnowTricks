@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
 
         // CommentFactory::createMany(500);
         
-        TrickAttachmentFactory::createMany(1500);
+        TrickAttachmentFactory::createMany(300);
 
         $manager->flush();
     }

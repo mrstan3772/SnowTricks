@@ -1,9 +1,15 @@
 {
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "cocur/slugify": {
         "version": "v4.0.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
+    },
+    "dflydev/dot-access-data": {
+        "version": "v3.0.1"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -109,8 +115,23 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v3.5.0"
+    },
     "laminas/laminas-code": {
         "version": "4.5.0"
+    },
+    "league/commonmark": {
+        "version": "2.1.1"
+    },
+    "league/config": {
+        "version": "v1.1.1"
+    },
+    "league/flysystem": {
+        "version": "2.4.0"
+    },
+    "league/mime-type-detection": {
+        "version": "1.9.0"
     },
     "monolog/monolog": {
         "version": "2.3.5"
@@ -118,8 +139,26 @@
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
+    "nette/schema": {
+        "version": "v1.2.2"
+    },
+    "nette/utils": {
+        "version": "v3.2.6"
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
+    },
+    "oneup/flysystem-bundle": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "4.0",
+            "ref": "3ae1b83985e89138f5443bbc2d9b8c074b497d49"
+        },
+        "files": [
+            "config/packages/oneup_flysystem.yaml"
+        ]
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -603,6 +642,12 @@
     },
     "twig/extra-bundle": {
         "version": "v3.3.4"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.5"
+    },
+    "twig/markdown-extra": {
+        "version": "v3.3.5"
     },
     "twig/string-extra": {
         "version": "v3.3.5"

@@ -7,7 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
-/public/assets/content/upload/
+/public/assets/content/uploads/
+/var/uploads/
 /.vscode/
 /.history/
 ###< symfony/framework-bundle ###

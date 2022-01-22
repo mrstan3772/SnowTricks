@@ -51,7 +51,7 @@
                                 </li>
                                 {% if is_granted('ROLE_ADMIN') %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('admin_dashboard') }}">Admin</a>
+                                    <a class="nav-link" href="{{ path('admin_index') }}">Admin</a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -88,6 +88,10 @@
                         </div>
                     </div>
                 </nav>
+
+                {% block hero %}
+                    {{ include('_hero_section.html.twig', {show: true}) }}
+                {% endblock %}
             </header>
         {% endblock %}
 
@@ -97,6 +101,9 @@
             {% endfor %}
         {% endfor %}
         
-        {% block main %}{% endblock %}
+        {% block content %}
+            {% block main %}{% endblock %}
+            {% block sidebar %}{% endblock %}
+        {% endblock %}
     </body>
 </html>

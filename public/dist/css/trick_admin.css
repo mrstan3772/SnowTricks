@@ -1,0 +1,12 @@
+form #trick_trick_group_id .form-check {
+  text-align: left;
+}
+
+.form-check {
+    margin: auto;
+    width: 100px;
+}
+
+form[name="trick"] label, form[name="trick"] legend {
+    font-weight: bold;
+}

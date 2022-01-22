@@ -45,9 +45,11 @@ final class TrickAttachmentFactory extends ModelFactory
 
         // return [
         //     // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-        //     'ta_trick_id' => self::faker()->numberBetween(38, 72),
+        //     'ta_trick_id' => self::faker()->numberBetween(38, 68),
         //     'ta_type' => 'image',
-        //     'ta_path' => $rand_val,
+        //     'ta_original_filename' => $rand_val,
+        //     'ta_filename' => $rand_val /* uniqid().'-'.$rand_val */,
+        //     'ta_mime_type' => 'image/jpeg'
         // ];
 
         $path_list = ['001.webm', '002.webm', '003.webm', '004.webm', '005.webm', '006.webm', '007.webm', '008.webm', '009.webm'];
@@ -55,9 +57,11 @@ final class TrickAttachmentFactory extends ModelFactory
 
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'ta_trick_id' => self::faker()->numberBetween(38, 72),
+            'ta_trick_id' => self::faker()->numberBetween(38, 68),
             'ta_type' => 'video',
-            'ta_path' => $rand_val,
+            'ta_original_filename' => $rand_val,
+            'ta_filename' => $rand_val /* uniqid().'-'.$rand_val */,
+            'ta_mime_type' => 'video/webm'
         ];
     }
 
