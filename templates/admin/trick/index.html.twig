@@ -25,7 +25,7 @@
                 {% for trick in tricks %}
                     <tr>
                         <td>{{ trick.trickName }}</td>
-                        <td>{{ trick.trickCreationDate|date('d/m/Y à H:h:i') }}</td>
+                        <td>{{ trick.trickCreationDate|date('d/m/Y à H:i:h') }}</td>
                         <td class="text-right">
                             <div class="item-actions">
                                 <a href="{{ path('admin_trick_show', {trick_slug: trick.trickSlug}) }}" class="btn btn-sm btn-default">
@@ -47,4 +47,12 @@
             </table>
         </section>
     </main>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section actions">
+        <a href="{{ path('admin_trick_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> Ajouter une figure
+        </a>
+    </div>
 {% endblock %}

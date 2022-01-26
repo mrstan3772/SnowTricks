@@ -24,47 +24,70 @@
 {% block body_id 'trick_details' %}
 
 {% block hero %}
-    {{ include('_hero_section.html.twig', {show: false}) }}
+    {{ include('_hero_section.html.twig', { show: false, title: null }) }}
 {% endblock %}
+
+{% block flash_message %}{% endblock %}
 
 {% block main %}
     <!-- ======= Trick Detail ======= -->
     <main id="main">
         {{ no_script|raw }}
 
-        <section class="container detail-box">
-                <header class="row detail-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/assets/images/tricks/{{ trick.TrickThumbnail }})">
+        <section class="container detail-box mb-5">
+                <header class="row detail-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url({{ uploads_base_url ~ '/images/' ~  trick.TrickThumbnail }})">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') and trick.TrickAuthorId == app.user.id %}
+                        {{ include('trick/_delete_trick_confirmation.html.twig') }}
+                        <div class="d-flex justify-content-end edit-btn">
+                            <a href="{{ path('admin_trick_edit', {trick_slug: trick.trickSlug}) }}" title="Éditer la figure" class="d-block pr-2"><i class="fas fa-edit"></i></a>
+                            <form action="{{ url('admin_trick_delete', {trick_slug: trick.TrickSlug}) }}" method="post" data-confirmation="true" id="delete-form">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                                <button type="submit" class="btn btn-lg btn-block btn-danger" style="font-size: .7em">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                    
                     <h1 class="text-uppercase text-center">{{ trick.TrickName }}</span>
                 </header>
-
+                {% for label, messages in app.flashes(['success', 'error', 'warning', 'info']) %}
+                    {% for message in messages %}
+                        {{ utils.alert(message, label) }}
+                    {% endfor %}
+                {% endfor %}
                 <aside class="container trick-attachment-section">
                     <div class="row row-cols-1 mt-5 row-cols-md-4 g-4 trick-attachment hide-content hidden-container">
-                        {% for trick in trick.trickAttachments %}
-                            {% if trick.TaType == 'image'%}
+                        {% for reference in trick.trickAttachments %}
+                            {% if reference.TaType == 'image'%}
                                 <div class="card text-white">
                                     <figure class="hover-img">
-                                        <img src="/assets/content/uploads/images/{{ trick.TaFilename }}" alt="Card image">
+                                        <img src="{{ uploads_base_url }}/{{ reference.filePath }}" alt="Card image">
                                         <figcaption>
-                                            {{ trick.TaFilename }}
+                                            {{ reference.TaOriginalFilename|u.truncate(15, '...') }}
                                         </figcaption>
                                     </figure>
                                 </div>
-                            {% elseif trick.TaType == 'video' %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for reference in trick.trickAttachments %}
+                            {% if reference.TaType == 'video'%}
                                 <div class="card text-white w-100">
                                     <video class="js-player" playsinline controls>
-                                        <source src="/assets/content/uploads/videos/{{ trick.TaFilename }}" type="video/mp4" />
+                                        <source src="{{ uploads_base_url }}/{{ reference.filePath }}" type="{{ reference.TaMimeType }}" />
                                     </video>
                                 </div>
                             {% endif %}
-                        {% else %}
+                        {% endfor %}
+
+                        {% if trick.trickAttachments is empty %}
                             <script>
                                 $(window).on('load', function () {
                                     $('.trick-attachment-section').css('display', 'none');
                                 })
                             </script>
-                        {% endfor %}
-
-                
+                        {% endif %}
                     </div>
 
                     <button class="btn btn-outline-dark show-more" data-status="more"><i class="fas fa-chevron-down"></i></button>
@@ -80,10 +103,10 @@
                             <p>{{ trick.TrickDescription|markdown_to_html }}</p>
                         </section>
 
-                        <section class="post-metadata">
-                            <span class="metadata"><i class="fa fa-calendar"></i> {{ trick.trickCreationDate|date('d/m/Y à H:h:i') }}</span>
+                        <section class="post-metadata mt-5">
+                            <span class="metadata"><i class="fa fa-calendar"></i> {{ trick.trickCreationDate|date('d/m/Y à H:i:h') }}</span>
                             {% if trick.TrickUpdateDate is defined and trick.TrickUpdateDate is not null %}
-                                <span class="metadata"><i class="fas fa-pen"></i> {{ trick.TrickUpdateDate|date('d/m/Y à H:h:i') }}</span>
+                                <span class="metadata"><i class="fas fa-pen"></i> {{ trick.TrickUpdateDate|date('d/m/Y à H:i:h') }}</span>
                             {% endif %}
                             <span class="metadata"><i class="fa fa-user"></i> {{ trick.trickAuthor.username }}</span>
                             <span class="metadata"><i class="fas fa-tags"></i> {{ trick.trickGroup.groupName }}</span>
@@ -126,7 +149,7 @@
                                         {# it's not mandatory to set the timezone in localizeddate(). This is done to
                                         avoid errors when the 'intl' PHP extension is not available and the application
                                         is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
-                                        <strong>{{ comment.commentCreationDate|date('d/m/Y à H:h:i') }}</strong>
+                                        <strong>{{ comment.commentCreationDate|date('d/m/Y à H:i:h') }}</strong>
                                     </h4>
                                     <div>
                                         {{ comment.commentContent }}
@@ -134,13 +157,24 @@
                                 </div>
                             </div>
                         {% else %}
-                            <div class="trick-comment">
-                                <p>Aucun commentaire.  
-                                Pour en ajouter <a href="{{ path('app_register') }}" title="Page de création de compte" class="fw-bold">créer un compte </a> ou <a href="{{ path('security_login') }}" title="Page de connexion" class="fw-bold">connectez-vous</a> !</p>
-                            </div>
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <div class="trick-comment">
+                                    <p class="text-center fw-bold">Aucun commentaire.</p>
+                                </div>
+                            {% else %}
+                                <div class="trick-comment">
+                                    <p class="text-center">Aucun commentaire.  
+                                    Pour en ajouter <a href="{{ path('app_register') }}" title="Page de création de compte" class="fw-bold">créer un compte </a> ou <a href="{{ path('security_login') }}" title="Page de connexion" class="fw-bold">connectez-vous</a> !</p>
+                                </div>
+                            {% endif %}
+                            <script>
+                                $(window).on('load', function () {
+                                    $('.comment-btn').css('display', 'none');
+                                })
+                            </script>
                         {% endfor %}
                     </div>
-                    <button type="button" class="w-75  btn btn-outline-dark mt-5 mb-5 load-more-btn">
+                    <button type="button" class="w-75  btn btn-outline-dark mt-5 mb-5 load-more-btn comment-btn">
                         <span class="spinner-grow spinner-grow-lg" role="status" aria-hidden="true"></span>
                         <span class="button-text">Charger plus de commentaires</span>
                     </button>

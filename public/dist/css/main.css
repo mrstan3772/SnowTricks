@@ -155,7 +155,7 @@ a:hover {
 }
 .hero .hero-title {
   font-weight: 600;
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .slogan {
@@ -576,7 +576,7 @@ a:hover {
   opacity: 0;
   z-index: 2;
   transition-delay: 0.1s;
-  font-size: 24px;
+  font-size: .7em;
   font-family: sans-serif;
   font-weight: 400;
   letter-spacing: 1px;

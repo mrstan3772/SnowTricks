@@ -19,6 +19,12 @@
   min-height: 300px;
 }
 
+#sidebar .section,
+#sidebar .section a,
+#sidebar .section button {
+  width: 100%;
+}
+
 .navbar {
   background-color: darkslategrey;
 }

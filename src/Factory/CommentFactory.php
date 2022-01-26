@@ -47,8 +47,8 @@ final class CommentFactory extends ModelFactory
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'comment_content' => self::faker()->paragraphs(5, true),
-            'comment_author_id' => self::faker()->numberBetween(39, 39),
-            'comment_trick_id' => self::faker()->numberBetween(38, 72),
+            'comment_author_id' => self::faker()->numberBetween(1, 10),
+            'comment_trick_id' => self::faker()->numberBetween(1, 30),
             'comment_creation_date' => self::faker()->dateTime(), // TODO add DATETIME ORM type manually
         ];
     }

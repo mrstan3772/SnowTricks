@@ -2,7 +2,7 @@
     {% if type == 'error' %}
         {% set type = 'danger' %}
     {% endif %}
-    <div class="alert alert-{{ type }} text-center" role="alert">
-        {{ message }}
+    <div class="alert alert-{{ type }} text-center mt-5" role="alert">
+        {{ message|raw }}
     </div>
 {% endmacro %}

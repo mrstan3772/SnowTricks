@@ -1,0 +1,16 @@
+<h3 class="text-center">Ajouter du contenu annexe</h3>
+                
+<div class="bg-light mt-4 p-4 mb-5 d-flex justify-content-center">
+    <div class="well text-center">
+        <form action="{{ path('admin_trick_add_reference', {
+            id: trick.id
+        }) }}" method="POST" enctype="multipart/form-data" class="dropzone js-reference-dropzone">
+        </form>
+    </div>
+</div>
+
+<h3 class="text-center">Liste des ressources annexes</h3>
+
+<div class="bg-light mt-4 p-4 d-flex justify-content-center">
+    <ul class="list-group small js-reference-list" data-url="{{ path('admin_trick_list_references', {id: trick.id}) }}"></ul>
+</div>

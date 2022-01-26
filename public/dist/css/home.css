@@ -7,7 +7,7 @@
   z-index: 99;
   position: fixed;
   right: 20px;
-  bottom: 50px;
+  bottom: 100px;
   background-color: transparent;
   background-repeat: no-repeat;
   border: none;
@@ -28,4 +28,15 @@
   cursor: pointer;
   overflow: hidden;
   outline: none;
+}
+
+.edit-btn {
+  line-height: 2em;
+}
+
+.edit-btn .btn {
+  background: none;
+  color: #1e1e1e;
+  border: none;
+  font-weight: 900;
 }
