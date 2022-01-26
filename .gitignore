@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /public/assets/content/uploads/
+!/public/assets/content/uploads/ff080.jpg
 /var/uploads/
 /.vscode/
 /.history/

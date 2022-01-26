@@ -49,12 +49,6 @@ The symfony binary also provides a tool to check if your computer meets all requ
 
 Without this tool you have to replace in the terminal `symfony` with `php bin/console` and always at the root of the project.
 
-## Installation
-
-### Dependencies
-
-Use the command `compose install` from the project root directory(SnowTricks). Do not answer questions if you see any during the installation (press enter to skip). Once this step is done you will have all the necessary dependencies for the main project.
-
 ## Deployment
 
 
@@ -72,19 +66,12 @@ SITE_BASE_URL='/'
 ```
 Found this example in the root folder under the file name [".env.example"](https://github.com/mrstan3772/SnowTricks/blob/master/.env.example)
 
+### Dependencies
 
-### Run Server
+Use the command `composer install` **[AFTER EDITING THE .ENV FILE](https://github.com/mrstan3772/SnowTricks#application-configuration)** from the project root directory(SnowTricks). Do not answer questions if you see any during the installation (press enter to skip). Once this step is done you will have all the necessary dependencies for the main project.
 
-Type this command inside the root folder(Snow Tricks) to start running web server :
 
-`symfony serve`
-
-An address in the format 127.0.0.1:<port> is shown on the terminal.
-
-Copy and paste this address in the navigation bar of your browser.
-
-That's all !
-
+## Installation
 
 ### Creating tables in the database (MySQL)
 
@@ -94,6 +81,7 @@ From now on, we will focus on creating the tables required to record trick and u
 #Same name in your .env file to replace "db_name" 
 symfony console doctrine:database:create
 symfony console make:migration
+#IF ERROR THEN REMOVE DATABASE AND REMOVE ALL MIGRATION FILES IN "migrations" FOLDER AND START AGAIN
 symfony console doctrine:migrations:migrate
 
 #OPTIONAL
@@ -110,6 +98,19 @@ And load fixtures data with this command :
 In order to keep the directory as light as possible, the resources for demonstrations have simply been ignored.
 
 However, you can download them from [link](https://mega.nz/file/l9VQgBrL#kDtQNtmQQD6MDDU8xpZxzTEUVRzYBVDz1gVk--w1O28) and add them to the folder following the path `/public/assets/content/uploads/images` and `/public/assets/content/uploads/videos`.
+
+### Run Server
+
+Type this command inside the root folder(Snow Tricks) to start running web server :
+
+`symfony serve`
+
+An address in the format 127.0.0.1:<port> is shown on the terminal.
+
+Copy and paste this address in the navigation bar of your browser.
+
+That's all !
+
 
 ## Version
 
