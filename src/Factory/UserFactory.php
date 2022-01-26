@@ -49,11 +49,10 @@ final class UserFactory extends ModelFactory
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'username' => self::faker()->name(),
             'email' => self::faker()->email(),
-            'user_avatar' =>  self::faker()->word() . '.' . self::faker()->fileExtension(),
+            'user_avatar' =>  'default-avatar.jpg',
             'password' => self::faker()->UUID(),
             'plainPassword' => 'tada',
             'is_verified' => true,
-            'user_admin' => false,
             'user_registration_date' => self::faker()->dateTime(), // TODO add DATETIME ORM type manually
             'roles' => [$rand_val],
         ];

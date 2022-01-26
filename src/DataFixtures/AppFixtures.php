@@ -22,15 +22,15 @@ class AppFixtures extends Fixture
         GroupFactory::createOne(['group_name' => 'Groupe 4']);
         GroupFactory::createOne(['group_name' => 'Groupe 5']);
 
-        TrickFactory::createOne(['trick_name' => 'Butters', 'trick_thumbnail' => 'butters.jpg']);
-        TrickFactory::createOne(['trick_name' => 'Indy Grabs', 'trick_thumbnail' => 'indy-grabs.jpeg']);
-        TrickFactory::createOne(['trick_name' => 'Ollie', 'trick_thumbnail' => 'Ollie.jpg']);
-        TrickFactory::createOne(['trick_name' => 'Frontside 180s', 'trick_thumbnail' => 'frontside-180s.jpg']);
-        TrickFactory::createMany(31);
+        TrickFactory::createOne(['trick_name' => 'Butters']);
+        TrickFactory::createOne(['trick_name' => 'Indy Grabs']);
+        TrickFactory::createOne(['trick_name' => 'Ollie']);
+        TrickFactory::createOne(['trick_name' => 'Frontside 180s']);
+        TrickFactory::createMany(100);
 
         CommentFactory::createMany(500);
         
-        TrickAttachmentFactory::createMany(300);
+        // TrickAttachmentFactory::createMany(300);
 
         $manager->flush();
     }
