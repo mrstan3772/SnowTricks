@@ -30,7 +30,7 @@
 
     <body id="{% block body_id %}{% endblock %}">
 
-    {% block header %}
+        {% block header %}
         <header>
             <nav
                     class="navbar navbar-expand-lg navbar-light bg-light px-1"
@@ -90,20 +90,35 @@
                 </nav>
 
                 {% block hero %}
-                    {{ include('_hero_section.html.twig', {show: true}) }}
+                    {{ include('_hero_section.html.twig', { show: true,  title: 'Votre Passion, Nôtre Dévotion !' }) }}
                 {% endblock %}
             </header>
         {% endblock %}
 
-        {% for label, messages in app.flashes(['success', 'error', 'warning', 'info']) %}
-            {% for message in messages %}
-                {{ utils.alert(message, label) }}
+        {% block flash_message %}
+            {% for label, messages in app.flashes(['success', 'error', 'warning', 'info']) %}
+                {% for message in messages %}
+                    {{ utils.alert(message, label) }}
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        
+        {% endblock %}
+
         {% block content %}
             {% block main %}{% endblock %}
             {% block sidebar %}{% endblock %}
+            {% block footer %}
+            <footer id="footer" class="bg-light mt-4 pt-4 pb-4 d-flex justify-content-center text-center border border-secondary">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="copyright-box"> 
+                                <p class="copyright text-left">© Copyright {{ "now"|date("Y") }} <strong>SNOWTRICKS</strong> Tous droits réservés.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            {% endblock %}
         {% endblock %}
     </body>
 </html>

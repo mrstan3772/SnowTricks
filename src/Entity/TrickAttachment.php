@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\TrickAttachmentRepository;
+use App\Service\UploaderHelper;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,37 +17,46 @@ class TrickAttachment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("main")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("main")
      */
     private $ta_trick_id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("main")
      */
     private $ta_type;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("main")
      */
     private $ta_filename;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="ta_tricks")
      * @ORM\JoinColumn(name="ta_trick_id", referencedColumnName="id", nullable=false)
+     * @Groups("main")
      */
     private $ta_trick;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"main", "input"})
+     * @Assert\NotBlank()
+     * @Assert\Length(max=100)
      */
     private $ta_original_filename;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("main")
      */
     private $ta_mime_type;
 
@@ -128,5 +140,17 @@ class TrickAttachment
         $this->ta_mime_type = $ta_mime_type;
 
         return $this;
+    }
+
+    /**
+    * @Groups("main")
+    */
+    public function getFilePath(): string
+    {
+        if (preg_match('/image/', $this->getTaMimeType())) {
+            return UploaderHelper::TRICK_IMAGE_REFERENCE . '/' . $this->getTaFilename();
+        } else if (preg_match('/video/', $this->getTaMimeType())) {
+            return UploaderHelper::TRICK_VIDEO_REFERENCE . '/' . $this->getTaFilename();
+        }
     }
 }

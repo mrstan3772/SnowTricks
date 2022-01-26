@@ -9,6 +9,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script src="/dist/js/admin.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js" integrity="sha512-oQq8uth41D+gIH/NJvSJvVB85MFk1eWpMK6glnkg6I7EdMqC1XVkW7RxLheXwmFdG03qScCM7gKS/Cx3FYt7Tg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/dist/js/trick_admin.js"></script>
 {% endblock %}
@@ -20,9 +22,9 @@
                 {% block main %}{% endblock %}
             </div>
 
-            <div id="sidebar" class="col-sm-3">
+            <aisde id="sidebar" class="col-sm-3">
                 {% block sidebar %}{% endblock %}
-            </div>
+            </aside>
         </div>
     </div>
 {% endblock %}

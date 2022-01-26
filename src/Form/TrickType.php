@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class TrickType extends AbstractType
@@ -30,6 +33,14 @@ class TrickType extends AbstractType
                     'label' => 'Saisir le nom de la figure',
                     'constraints' => [
                         new NotBlank(),
+                        new Length(
+                            [
+                                'min' => 3,
+                                'max' => 255,
+                                'minMessage' => 'Le nom de la figure doit comporter au moins {{ limit }} caractères',
+                                'maxMessage' => 'Le nom de la figure ne peut pas dépasser {{ limit }} caractères',
+                            ]
+                        )
                     ],
                     'attr' => [
                         'autofocus' => true,
@@ -49,6 +60,14 @@ class TrickType extends AbstractType
                     'label' => 'Saisir une description',
                     'constraints' => [
                         new NotBlank(),
+                        new Length(
+                            [
+                                'min' => 25,
+                                'max' => 10000,
+                                'minMessage' => 'Votre description doit comporter au moins {{ limit }} caractères',
+                                'maxMessage' => 'Votre description ne peut pas dépasser {{ limit }} caractères',
+                            ]
+                        )
                     ],
                     'attr' => [
                         'placeholder' => 'Japan Air - A very tweaked mute air where the skater pulls the board up behind his back and knees pointed down.',
@@ -70,6 +89,7 @@ class TrickType extends AbstractType
                     'label' => 'Définir un groupe',
                     'constraints' => [
                         new NotBlank(),
+                        new Choice([41, 42, 43, 44, 45])
                     ],
                     'choices'  => [
                         'Groupe 1' => 41,
@@ -90,11 +110,14 @@ class TrickType extends AbstractType
                 DateTimePickerType::class,
                 [
                     'required' => true,
-                    'label' => 'Sélectionnez une date',
+                    'label' => 'Saisir une date',
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
                     'attr' => [
                         'title' => 'Saisir une date',
                     ],
-                    'help' => 'Sélectionnez une date pour  la publication de la figure.',
+                    'help' => 'Saisir une date pour  la publication de la figure.',
                 ]
             );
         // ->add('trick_update_date')

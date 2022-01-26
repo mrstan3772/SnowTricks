@@ -73,10 +73,8 @@ class Trick
      */
     private $trick_comments;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $trick_thumbnail;
+
+    private $trick_thumbnail = 'ff080.jpg';
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -252,6 +250,10 @@ class Trick
 
     public function getTrickThumbnail(): ?string
     {
+        if (!is_null($first_image = $this->getFirstImage())) {
+            $this->trick_thumbnail = $first_image->getTaFilename();
+        }
+
         return $this->trick_thumbnail;
     }
 
@@ -272,5 +274,18 @@ class Trick
         $this->trick_slug = $trick_slug;
 
         return $this;
+    }
+
+    public function getFirstImage()
+    {
+        $trick_attachments = $this->trick_attachments->toArray();
+
+        foreach ($trick_attachments as $refernce) {
+            if ($refernce->getTaType() === 'image') {
+                return $refernce;
+            }
+        }
+
+        return null;
     }
 }

@@ -2,17 +2,33 @@
     <div class="col">
         <div class="card">
             <div class="crop">
-                <a href="{{ path('trick_detail', {trick_slug: trick.trickSlug}) }}"
-                    title="Cliquer pour consulter la figure {{ trick.trickName }}"><img
-                        src="/assets/images/tricks/{{ trick.trickThumbnail }}" class="card-img-top" alt=""></a>
+                <a href="{{ path('trick_detail', {trick_slug: trick.trickSlug}) }}"  title="Cliquer pour consulter la figure {{ trick.trickName }}">
+                    <img src="{{ uploads_base_url ~ '/images/' ~  trick.TrickThumbnail }}" class="card-img-top" alt="">
+                </a>
             </div>
             <div class="card-body">
                 <h5 class="card-title text-center"><a href="{{ path('trick_detail', {trick_slug: trick.trickSlug}) }}"
                         title="Cliquer pour consulter la figure {{ trick.trickName }}">{{
                         trick.trickName|u.truncate(20, '...') }}</a></h5>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') and trick.TrickAuthorId == app.user.id %}
+                    {{ include('trick/_delete_trick_confirmation.html.twig') }}
+                    <div class="d-flex justify-content-end edit-btn">
+                        <a href="{{ path('admin_trick_edit', {trick_slug: trick.trickSlug}) }}" title="Éditer la figure" class="d-block pr-2"><i class="fas fa-edit"></i></a>
+                        <form action="{{ url('admin_trick_delete', {trick_slug: trick.TrickSlug}) }}" method="post" data-confirmation="true" id="delete-form">
+                            <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                            <button type="submit" class="btn btn-lg btn-block btn-danger" style="font-size: .7em">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 {% else %}
-    <div class="well w-100 text-center"><p>Aucune autre figure trouvé. Pour en ajouter <a href="{{ path('app_register') }}" title="Page de création de compte" class="fw-bold">créer un compte </a> ou <a href="{{ path('security_login') }}" title="Page de connexion" class="fw-bold">connectez-vous</a> !</p></div>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="well w-100 text-center fw-bold"><p>Aucune autre figure trouvé !</p></div>
+    {% else %}
+        <div class="well w-100 text-center"><p>Aucune autre figure trouvé. Pour en ajouter <a href="{{ path('app_register') }}" title="Page de création de compte" class="fw-bold">créer un compte </a> ou <a href="{{ path('security_login') }}" title="Page de connexion" class="fw-bold">connectez-vous</a> !</p></div>
+    {% endif %}
 {% endfor %}

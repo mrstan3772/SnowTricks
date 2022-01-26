@@ -5,6 +5,10 @@
 
 {% block body_id 'trick_show' %}
 
+{% block hero %}
+    {{ include('_hero_section.html.twig', { show: true, title: trick.TrickName }) }}
+{% endblock %}
+
 {% block main %}
     <!-- ======= Trick Content ======= -->
     <main id="main">
@@ -18,16 +22,16 @@
 
                 <main>
                     <section class="post-metadata text-center mt-3">
-                        <span class="metadata"><i class="fa fa-calendar"></i> {{ trick.trickCreationDate|date('d/m/Y à H:h:i') }}</span>
+                        <span class="metadata"><i class="fa fa-calendar"></i> {{ trick.trickCreationDate|date('d/m/Y à H:i:h') }}</span>
                             {% if trick.TrickUpdateDate is defined and trick.TrickUpdateDate is not null %}
-                                <span class="metadata"><i class="fas fa-pen"></i> {{ trick.TrickUpdateDate|date('d/m/Y à H:h:i') }}</span>
+                                <span class="metadata"><i class="fas fa-pen"></i> {{ trick.TrickUpdateDate|date('d/m/Y à H:i:h') }}</span>
                             {% endif %}
                             <span class="metadata"><i class="fa fa-user"></i> {{ trick.trickAuthor.username }}</span>
                             <span class="metadata"><i class="fas fa-tags"></i> {{ trick.trickGroup.groupName }}</span>
                     </section>
 
                     <section class="post-description mt-5">
-                        <p class="text-center">{{ trick.TrickDescription|markdown_to_html }}</p>
+                        <p class="text-center">{{ trick.TrickDescription|markdown_to_html|sanitize_html }}</p>
                     </section>
                 </main>
             </article>

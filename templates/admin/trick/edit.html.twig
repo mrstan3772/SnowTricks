@@ -1,31 +1,25 @@
 {% extends 'admin/layout.html.twig' %}
 {% import 'macros/alertes.html.twig' as utils %}
 
-{% block title %}Modifier l'article {{ trick.id }} | {{ title_page }}{% endblock %}
+{% block title %}Modifier la figure {{ trick.id }} | {{ title_page }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="/dist/js/trick_upload.js"></script>
+{% endblock %}
 
 {% block body_id 'trick_edit' %}
+
+{% block hero %}
+    {{ include('_hero_section.html.twig', { show: true, title: trick.TrickName }) }}
+{% endblock %}
 
 {% block main %}
     <!-- ======= Trick Edit Form ======= -->
     <main id="main" class="mt-3">
         {{ no_script|raw }}
-        <script>
-            Dropzone.autoDiscover = false;
-            $(window).on('load', function () {
-                initializeDropzone();
-                $('.dz-button').text('Déposez vos fichiers ici !')
-            })
-
-            function initializeDropzone() {
-                var formElement = document.querySelector('.js-reference-dropzone');
-                if (!formElement) {
-                    return;
-                }
-                var dropzone = new Dropzone(formElement, {
-                    paramName: 'reference'
-                });
-            }
-        </script>
+        
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <h3 class="text-center">Contenu principal</h3>
@@ -39,25 +33,19 @@
                     </div>
                 </div>
 
-                <h3 class="text-center">Contenu annexe</h3>
-                
-                <div class="bg-light mt-4 p-4 d-flex justify-content-center">
-                    <div class="well text-center">
-                        <form action="{{ path('admin_trick_add_reference', {
-                            id: trick.id
-                        }) }}" method="POST" enctype="multipart/form-data" class="dropzone js-reference-dropzone">
-                        </form>
-                    </div>
-                </div>
+                {{ include('admin/trick/_upload_form.html.twig') }}
             </div>
         </div>
     </main>
+    <script>
+        let path = "{{ uploads_base_url }}"
+    </script>
 {% endblock %}
 
 {% block sidebar %}
     <div class="section">
-        <a href="{{ path('admin_trick_edit', {trick_slug: trick.TrickSlug}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-edit" aria-hidden="true"></i> Modifier le contenu
+        <a href="{{ path('admin_trick_show', {trick_slug: trick.TrickSlug}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-eye" aria-hidden="true"></i> Voir la figure
         </a>
     </div>
 

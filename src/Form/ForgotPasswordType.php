@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ForgotPasswordType extends AbstractType
@@ -25,6 +26,14 @@ class ForgotPasswordType extends AbstractType
                     'second_name' => 'confirm',
                     'constraints' => [
                         new NotBlank(),
+                        new Length(
+                            [
+                                'min' => 3,
+                                'max' => 255,
+                                'minMessage' => 'Le mot de passe pour un compte utilisateur doit comporter au moins {{ limit }} caractères',
+                                'maxMessage' => 'Le mot de passe pour un compte utilisateur ne peut pas dépasser {{ limit }} caractères',
+                            ]
+                        )
                     ],
                     'first_options' => [
                         'label' => 'Saisir votre nom d\'utilisateur',

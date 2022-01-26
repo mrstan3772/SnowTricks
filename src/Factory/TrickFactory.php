@@ -48,11 +48,11 @@ final class TrickFactory extends ModelFactory
     {        
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'trick_author_id' => self::faker()->numberBetween(39, 39),
+            'trick_author_id' => self::faker()->numberBetween(1, 10),
             'trick_name' => self::faker()->words(2, true),
             'trick_description' => self::faker()->paragraphs(5, true),
-            'trick_thumbnail' => 'trick_003.jpg',
-            'trick_group_id' => self::faker()->numberBetween(41, 45),
+            // 'trick_thumbnail' => 'trick_003.jpg', // Depends if default image is saved in database
+            'trick_group_id' => self::faker()->numberBetween(1, 5),
             'trick_creation_date' => self::faker()->dateTime(), // TODO add DATETIME ORM type manually
         ];
     }

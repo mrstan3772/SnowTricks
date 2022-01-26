@@ -11,7 +11,9 @@
                 {% if show %}
                     <div class="container">
                         <p class="text-uppercase hero-title ">【SnowTricks】</p>
-                        <p class="mb-4 text-capitalize hero-title hero-subtitle"><span class="">Votre Passion, Nôtre Dévotion !</p>
+                        {% if title is not null %}
+                            <p class="mb-4 text-capitalize hero-title hero-subtitle"><span class="">{{ title }}</p>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>

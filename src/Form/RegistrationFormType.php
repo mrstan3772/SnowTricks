@@ -11,7 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
 {
@@ -23,6 +26,17 @@ class RegistrationFormType extends AbstractType
                 TextType::class,
                 [
                     'required' => true,
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(
+                            [
+                                'min' => 3,
+                                'max' => 255,
+                                'minMessage' => 'Le nom d\'utilisateur doit comporter au moins {{ limit }} caractères',
+                                'maxMessage' => 'Le nom d\'utilisateur ne peut pas dépasser {{ limit }} caractères',
+                            ]
+                        )
+                    ],
                     'attr' => ['autofocus' => true, 'placeholder' => 'John'],
                     'help' => 'Identifiant d\'authentification, il doit être unique',
                 ]
@@ -32,6 +46,9 @@ class RegistrationFormType extends AbstractType
                 EmailType::class,
                 [
                     'required' => true,
+                    'constraints' => [
+                        new Email()
+                    ],
                     'attr' => ['placeholder' => 'johndoe@snowtricks.com'],
                     'help' => 'Une adresse email relié à aucun compte'
                 ]

@@ -70,6 +70,8 @@ class TrickController extends AbstractController
 
             $eventDispatcher->dispatch(new CommentCreatedEvent($comment));
 
+            $this->addFlash('success', '<strong>' . $this->getUser()->getUserName() . '</stong>, nous vous informons que votre message a bien été posté !');
+
             return $this->redirectToRoute('trick_detail', ['trick_slug' => $trick->getTrickSlug()]);
         }
     }
@@ -78,13 +80,6 @@ class TrickController extends AbstractController
     public function commentThread(Trick $trick, Int $index): Response
     {
         $comments = $this->sortComments($trick);
-
-        // $start_index = $index * 4;
-        // $end_index = ($index * 4) + 5;
-
-        // dd($start_index, $end_index);
-
-        // $comments = array_slice($comments, $start_index, $end_index);
 
         return $this->render(
             'trick/comment_thread.html.twig',

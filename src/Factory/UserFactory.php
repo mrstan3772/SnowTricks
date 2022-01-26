@@ -42,6 +42,9 @@ final class UserFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $role_list = ['ROLE_USER', 'ROLE_ADMIN'];
+        $rand_val = $role_list[array_rand($role_list)];
+
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'username' => self::faker()->name(),
@@ -49,11 +52,10 @@ final class UserFactory extends ModelFactory
             'user_avatar' =>  self::faker()->word() . '.' . self::faker()->fileExtension(),
             'password' => self::faker()->UUID(),
             'plainPassword' => 'tada',
-            'user_token' => 'CfDJ8OW5OI0CPGJBgSNlGwO0x4YF7qbYKVv7KOO-N0eFtDUzXOrL7F9Xd9W1otVi4ueJOkAmAhuoHFWNkqRaFD7zvAMHMSKncl6Vo5QXKmpvy6vqxOKxSURdIey8aZPRi3Nnhp2p9la-Al5xrVKz0lignRdcCHf3O7pF9zv_sNx_c_T7pUe3WsxaJEPX3t_9FO2Wjw',
             'is_verified' => true,
             'user_admin' => false,
             'user_registration_date' => self::faker()->dateTime(), // TODO add DATETIME ORM type manually
-            'roles' => ['ROLE_USER'],
+            'roles' => [$rand_val],
         ];
     }
 

@@ -21,6 +21,14 @@ use Cocur\Slugify\Slugify;
 #[Route('/admin/trick'), IsGranted('ROLE_ADMIN')]
 class TrickController extends AbstractController
 {
+    private Slugify $slugify;
+
+    public function __construct(
+        Slugify $slugify,
+    ) {
+        $this->slugify = $slugify;
+    }
+
     #[
         Route('/', methods: ['GET'], name: 'admin_index'),
         Route('/', methods: ['GET'], name: 'admin_trick_index'),
@@ -33,42 +41,69 @@ class TrickController extends AbstractController
     }
 
     #[Route('/new', methods: ['GET', 'POST'], name: 'admin_trick_new')]
-    public function new(Request $request, GroupRepository $groups, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, GroupRepository $groups, EntityManagerInterface $entityManager, UploaderHelper $uploaderHelper): Response
     {
-        $slugify = new Slugify();
         $trick = new Trick();
 
         $trick->setTrickAuthor($this->getUser());
-        $trick->setTrickUpdateDate(new \DateTime());
-        $trick->setTrickSlug($slugify->slugify($trick->getTrickName()));
+        $trick->setTrickCreationDate(new \DateTime());
 
         // See https://symfony.com/doc/current/form/multiple_buttons.html
-        $form = $this->createForm(TrickType::class, $trick)
-            ->add('saveAndCreateNew', SubmitType::class);
-
-        $group_id = $form->get('trick_group_id');
-
-        $group = $groups->findOneBy(
-            [
-                'id' => $group_id,
-            ]
-        );
-
-        $trick->setTrickGroup($group);
+        $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);
 
+        $data = $form->getData();
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $group = $groups->findOneBy(
+                [
+                    'id' => $data->getTrickGroupId(),
+                ]
+            );
+
+            $trick->setTrickGroup($group);
+
+            $trick->setTrickSlug($this->slugify->slugify($trick->getTrickName()));
+
             $entityManager->persist($trick);
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Création de la figure <strong>' . $trick->getTrickName() . '</stong> achevé !');
+            // UPLOAD REFERENCES
+            $uploadList = $request->files->get('reference');
 
-            if ($form->get('saveAndCreateNew')->isClicked()) {
-                return $this->redirectToRoute('admin_trick_new');
+            foreach ($uploadList as $uploadedFile) {
+
+                $violations = $uploaderHelper->validateRefFile($uploadedFile);
+
+                if ($violations->count() > 0) {
+                    return $this->json($violations, 400);
+                }
+
+                $trickType = $uploaderHelper->defType($uploadedFile);
+
+                $location = $trickType === 'image' ? UploaderHelper::TRICK_IMAGE_REFERENCE : UploaderHelper::TRICK_VIDEO_REFERENCE;
+
+                $filename = $uploaderHelper->uploadTrickReference($uploadedFile, $location, true);
+
+                $trickReference = new TrickAttachment($trick);
+                $trickReference->setTaFilename($filename);
+                $trickReference->setTaType($trickType);
+                $trickReference->setTaOriginalFilename($uploadedFile->getClientOriginalName() ?? $filename);
+                $trickReference->setTaMimeType($uploadedFile->getMimeType() ?? 'application/octet-stream');
+
+                $entityManager->persist($trickReference);
             }
 
-            return $this->redirectToRoute('admin_trick_index');
+            $entityManager->flush();
+
+            return $this->json(
+                $trick->getTrickName(),
+                200,
+            );
+
+            // $this->addFlash('success', 'Création de la figure <strong>' . $trick->getTrickName() . '</stong> achevé !');
+
+            // return $this->redirectToRoute('admin_trick_index');
         }
 
         return $this->render(
@@ -101,8 +136,10 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $trick->setTrickSlug($this->slugify->slugify($trick->getTrickName()));
+            $trick->setTrickUpdateDate(new \DateTime);
             $entityManager->flush();
-            $this->addFlash('success', 'Mise à jour réalisé avec succès !');
+            $this->addFlash('success', 'Mise à jour réalisé avec succès pour la figure ' . $trick->getTrickName() . '!');
 
             return $this->redirectToRoute('admin_trick_edit', ['trick_slug' => $trick->getTrickSlug()]);
         }
@@ -118,7 +155,7 @@ class TrickController extends AbstractController
 
     #[Route('/{trick_slug}/delete', methods: ['POST'], name: 'admin_trick_delete')]
     #[IsGranted('delete', subject: 'trick')]
-    public function delete(Request $request, Trick $trick, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Trick $trick, EntityManagerInterface $entityManager, UploaderHelper $uploaderHelper): Response
     {
         if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
             return $this->redirectToRoute('admin_trick_index');
@@ -129,6 +166,7 @@ class TrickController extends AbstractController
 
         foreach ($trickAttachments as $attachment) {
             $entityManager->remove($attachment);
+            $uploaderHelper->deleteFile($attachment->getFilePath(), true);
         }
 
         foreach ($trickComments as $comment) {

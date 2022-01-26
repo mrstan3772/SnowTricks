@@ -31,10 +31,12 @@ class DateTimePickerType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'widget' => 'single_text',
-            'html5' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'widget' => 'single_text',
+                'html5' => true,
+            ]
+        );
     }
 
     /**

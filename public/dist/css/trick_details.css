@@ -67,10 +67,34 @@
 }
 
 .trick-comment {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
-
 .user-avatar {
-    width: 100%;
+  width: 100%;
+}
+
+.edit-btn {
+  line-height: 3em;
+  font-size: 2em;
+}
+
+.edit-btn a {
+  color: rgb(255, 255, 255);
+}
+
+.edit-btn .fas.fa-edit {
+  font-size: 0.8em;
+}
+
+.edit-btn .btn {
+  background: none;
+  color: rgb(236, 18, 18);
+  border: none;
+  font-weight: 900;
+  font-size: 1em;
+}
+
+.modal-backdrop.fade.show {
+  z-index: 20;
 }
