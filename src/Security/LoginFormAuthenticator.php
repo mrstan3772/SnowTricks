@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -48,6 +49,10 @@ class LoginFormAuthenticator extends AbstractAuthenticator
                     $user = $this->userRepository->findOneBy(['username' => $userIdentifier]);
 
                     if (!$user) {
+                        throw new UserNotFoundException();
+                    }
+
+                    if (!$user->isVerified()) {
                         throw new UserNotFoundException();
                     }
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +33,7 @@ class RegistrationController extends AbstractController
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('home');
         }
-        
+
         $date = new DateTime();
         $user = new User();
         $user->setUserAvatar('default-avatar.jpg');
@@ -68,30 +69,46 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
 
             $this->addFlash('success', 'Confirmez votre email à : ' . $user->getEmail());
-            $this->addFlash('info', 'Connectez-vous sans attendre pour profiter de votre compte. Veuillez valider le compte pour diposer de plus de fonctonnalités.');
 
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->render(
+            'registration/register.html.twig',
+            [
+                'registrationForm' => $form->createView(),
+            ]
+        );
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
-        try {
-            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        } catch (Exception $exception) {
-            $this->addFlash('warning', 'Connectez-vous pour valider le compte.');
+        // try {
+        //     // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // } catch (Exception $exception) {
+        //     $this->addFlash('warning', 'Connectez-vous pour valider le compte.');
 
-            return $this->redirectToRoute('security_login');
+        //     return $this->redirectToRoute('security_login');
+        // }
+
+        $id = $request->get('id');
+
+        // Verify the user id exists and is not null
+        if (null === $id) {
+            return $this->redirectToRoute('home');
+        }
+
+        // Ensure the user exists in persistence
+        $user = $userRepository->find($id);
+
+        if (null === $user) {
+            return $this->redirectToRoute('home');
         }
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
 
