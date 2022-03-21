@@ -14,7 +14,7 @@ It's provided with a set of resources including this one:
 - etc.
 
 
-## Contexte
+## Context
 Jimmy Sweat is an innovative and enthusiastic businessman with a strong interest in the sport of snowboarding. His goal is to create a collaborative site to make this sport accessible to the general public and to help people learn tricks.
 
 He wants to capitalize on the content provided by users in order to develop rich content that attracts the interest of users of the site. Later on, Jimmy wants to develop a business of establishing partnerships with snowboard brands based on the traffic that the content will have generated.
